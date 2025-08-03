@@ -1,0 +1,8 @@
+{
+  "editor.inlineSuggest.suppressSuggestions": true,
+  "editor.quickSuggestions": {
+    "strings": "inline"
+  },
+  "editor.suggest.snippetsPreventQuickSuggestions": true,
+  "editor.inlineSuggest.edits.showCollapsed": true
+}
