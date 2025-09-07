@@ -27,35 +27,31 @@ const ChatboxWidget = () => {
     "What templates are available?",
     "Can I customize my resume design?",
     "How do I download my resume?",
-    "Is the resume builder free?",
-    "What format can I export to?",
-    "How do I add work experience?",
-    "Can I save multiple versions?",
+
   ];
 
   const botResponses = {
     "How do I create a resume?":
-      "Creating a resume is easy! Simply click 'Create Resume' on our homepage...",
+      "Creating a resume is easy! Simply click 'Create Resume' on our homepage and follow the step-by-step guide. You can choose a template, fill in your details, and see a preview in real-time.",
     "What templates are available?":
-      "We offer 25+ professional resume templates including Modern, Classic...",
+      "We offer over 25 professionally designed resume templates. Our collection includes Modern, Classic, Creative, and Minimalist styles to suit various industries and job roles.",
     "Can I customize my resume design?":
-      "Absolutely! You can customize colors, fonts, spacing...",
+      "Absolutely! Our builder allows you to customize colors, fonts, spacing, and sections. You can create a personalized resume that reflects your unique professional brand.",
     "How do I download my resume?":
-      "Once you're satisfied with your resume, click the 'Download' button...",
+      "Once you're satisfied with your resume, click the 'Download' button. You can export your resume in PDF, Word, and other formats, ready for job applications.",
     "Is the resume builder free?":
-      "Yes, our basic resume builder is completely free...",
+      "Yes, our basic resume builder is completely free to use. It includes access to all our templates and standard customization options.",
     "What format can I export to?":
-      "You can export your resume in PDF, Word, text, and HTML formats...",
+      "You can export your resume in PDF, Word, text, and HTML formats, ensuring compatibility with online application systems.",
     "How do I add work experience?":
-      "Click 'Add Experience' and fill in job title, company, dates, and more...",
+      "In the editor, navigate to the 'Work Experience' section and click 'Add New'. You can then fill in the job title, company, dates of employment, and your key responsibilities and achievements.",
     "Can I save multiple versions?":
-      "Yes! You can save multiple resume versions for different jobs...",
+      "Yes! With a free account, you can save multiple versions of your resume. This is useful for tailoring your resume to different job applications.",
   };
 
   const openChatWidget = () => setChatState("widget");
   const closeChatWidget = () => setChatState("closed");
   const openChatInterface = () => setChatState("interface");
-  const closeChatInterface = () => setChatState("closed");
   const backToChatWidget = () => setChatState("widget");
 
   const addMessage = (text, sender) => {
@@ -81,6 +77,17 @@ const ChatboxWidget = () => {
   };
 
   const selectQuestion = (question) => {
+    setMessages([
+      {
+        id: 1,
+        text: "Welcome to Resume Builder! How can I help you create an amazing resume today?",
+        sender: "bot",
+        timestamp: new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+      },
+    ]);
     openChatInterface();
     setTimeout(() => {
       addMessage(question, "user");
@@ -91,12 +98,7 @@ const ChatboxWidget = () => {
   const sendMessage = () => {
     if (inputMessage.trim()) {
       addMessage(inputMessage, "user");
-      const response =
-        botResponses[inputMessage] ||
-        "Thank you for your message. Our team will get back to you shortly!";
-      setTimeout(() => {
-        addMessage(response, "bot");
-      }, 1000);
+      handleBotResponse(inputMessage);
       setInputMessage("");
     }
   };
@@ -108,35 +110,36 @@ const ChatboxWidget = () => {
   };
 
   return (
-    <div className="fixed bottom-2 right-2 sm:bottom-5 sm:right-5 z-50 font-sans w-full max-w-full sm:max-w-sm md:max-w-md lg:max-w-lg px-2 sm:px-0 flex flex-col items-end">
+    <div className="fixed bottom-4 right-4 z-50 font-sans flex flex-col items-end w-[calc(100%-2rem)] max-w-sm">
       {/* Chat Icon */}
       {chatState === "closed" && (
         <div
-          className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center cursor-pointer shadow-lg hover:scale-110 transition-all duration-300"
+          className="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center cursor-pointer shadow-lg hover:scale-110 transition-transform duration-300"
           onClick={openChatWidget}
         >
-          <MessageCircle className="w-6 h-6 text-white" />
+          <MessageCircle className="w-7 h-7 text-white" />
         </div>
       )}
 
       {/* Chat Widget */}
       {chatState === "widget" && (
-        <div className="bg-gray-900 text-white rounded-2xl p-4 sm:w-[78%] w-full sm:h-[488px] h-auto  shadow-xl animate-in slide-in-from-bottom-2 duration-300">
-          <div className="mb-4">
-            <h2 className="text-lg font-semibold">Chat with us</h2>
-            <p className="text-sm text-gray-300 mt-1">
-              👋 Need help building your resume? Let’s chat!
-            </p>
+        <div className="bg-gray-900 text-white rounded-2xl w-full max-w-sm h-auto shadow-xl animate-in slide-in-from-bottom-5 duration-300 flex flex-col">
+          <div className="p-4 flex justify-between items-center">
+            <div>
+              <h2 className="text-lg font-semibold">Chat with us</h2>
+              <p className="text-sm text-gray-300 mt-1">
+                👋 Need help building your resume?
+              </p>
+            </div>
+            <button
+              className="p-2 cursor-pointer hover:bg-gray-700 rounded-full"
+              onClick={closeChatWidget}
+            >
+              <X className="w-5 h-5" />
+            </button>
           </div>
 
-          <button
-            className="w-full bg-gray-700 hover:bg-gray-600 text-white rounded-xl py-2.5 text-sm mb-4"
-            onClick={openChatInterface}
-          >
-            Return to chat
-          </button>
-
-          <div className="bg-white text-gray-800 rounded-xl p-4 sm:h-[300px] h-auto overflow-y-auto">
+          <div className="p-4 mx-4 bg-white text-gray-800 rounded-xl m-2 mt-0">
             <h3 className="text-base font-semibold text-center mb-3">
               Instant answers
             </h3>
@@ -145,23 +148,29 @@ const ChatboxWidget = () => {
                 <button
                   key={i}
                   onClick={() => selectQuestion(q)}
-                  className="w-full text-left text-sm py-2 px-3 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg"
+                  className="w-full cursor-pointer text-left text-sm py-2 px-3 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg transition-colors"
                 >
                   {q}
                 </button>
               ))}
             </div>
           </div>
+          <button
+            className="text-white text-sm py-2.5 mx-2 mb-2 rounded-xl bg-gray-700 hover:bg-gray-600 transition-colors"
+            onClick={openChatInterface}
+          >
+            Start a new chat
+          </button>
         </div>
       )}
 
       {/* Chat Interface */}
       {chatState === "interface" && (
-        <div className="bg-white rounded-2xl w-full h-[75vh] max-h-screen shadow-xl flex flex-col overflow-hidden animate-in slide-in-from-bottom-2 duration-300">
+        <div className="bg-white rounded-2xl w-full h-[85vh] sm:h-[75vh] max-h-[600px] shadow-xl flex flex-col overflow-hidden animate-in slide-in-from-bottom-5 duration-300">
           {/* Header */}
-          <div className="bg-gray-900 text-white p-4 flex justify-between items-center">
+          <div className="bg-gray-900 text-white p-3 flex justify-between items-center shrink-0">
             <button
-              className="p-1 hover:bg-gray-700 rounded-full"
+              className="p-2 cursor-pointer hover:bg-gray-700 rounded-full"
               onClick={backToChatWidget}
             >
               <ArrowLeft className="w-5 h-5" />
@@ -170,8 +179,8 @@ const ChatboxWidget = () => {
               Resume Builder Support
             </div>
             <button
-              className="p-1 hover:bg-gray-700 rounded-full"
-              onClick={closeChatInterface}
+              className="p-2 cursor-pointer hover:bg-gray-700 rounded-full"
+              onClick={closeChatWidget}
             >
               <X className="w-5 h-5" />
             </button>
@@ -182,51 +191,39 @@ const ChatboxWidget = () => {
             {messages.map((msg) => (
               <div
                 key={msg.id}
-                className={`mb-4 ${
-                  msg.sender === "user" ? "text-right" : "text-left"
+                className={`mb-4 flex ${
+                  msg.sender === "user" ? "justify-end" : "justify-start"
                 }`}
               >
-                <div
-                  className={`inline-block max-w-[85%] px-4 py-2 rounded-2xl text-sm ${
-                    msg.sender === "user"
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-200 text-gray-800"
-                  }`}
-                >
-                  {msg.text}
-                </div>
-                <div className="text-xs text-gray-500 mt-1">
-                  {msg.timestamp}
+                <div className="flex items-end gap-2 max-w-[85%]">
+                  <div
+                    className={`px-4 py-2 rounded-2xl text-sm ${
+                      msg.sender === "user"
+                        ? "bg-blue-600 text-white rounded-br-none"
+                        : "bg-gray-200 text-gray-800 rounded-bl-none"
+                    }`}
+                  >
+                    {msg.text}
+                  </div>
                 </div>
               </div>
             ))}
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Newsletter CTA */}
-          <div className="p-3 bg-gray-50 border-t border-gray-200 text-center">
-            <p className="text-xs text-gray-600 mb-2">
-              Want resume tips & updates? Subscribe!
-            </p>
-            <button className="w-full bg-gray-200 hover:bg-gray-300 text-xs py-2 px-3 rounded-lg flex items-center justify-center gap-2 text-gray-700">
-              <Mail className="w-4 h-4" />
-              Get Resume Tips
-            </button>
-          </div>
-
           {/* Input */}
-          <div className="p-3 bg-white border-t border-gray-200 flex items-center gap-2">
+          <div className="p-3 bg-white border-t border-gray-200 flex items-center gap-2 shrink-0">
             <input
               type="text"
-              placeholder="Write a message"
-              className="flex-1 border border-gray-300 rounded-full py-2 px-4 text-sm focus:outline-none focus:border-blue-500"
+              placeholder="Type your message..."
+              className="flex-1 border border-gray-300 rounded-full py-2.5 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={handleKeyPress}
             />
             <button
               onClick={sendMessage}
-              className="w-10 h-10 bg-blue-500 hover:bg-blue-600 rounded-full flex items-center justify-center text-white"
+              className="w-10 cursor-pointer h-10 bg-blue-600 hover:bg-blue-700 rounded-full flex items-center justify-center text-white shrink-0 transition-colors"
             >
               <Send className="w-5 h-5" />
             </button>

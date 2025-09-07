@@ -8,6 +8,7 @@ const App = () => {
     <UserProvider>
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/dashboard" element={<LandingPage />} />
       </Routes>
     </UserProvider>
  

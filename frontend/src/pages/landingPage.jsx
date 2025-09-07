@@ -15,15 +15,18 @@ import { ProfileInfoCards } from "../components/Cards";
 import ContactUs from "./contactUs";
 import FooterComponent from "./Footer";
 import ChatboxWidget from "../components/supportBot";
+import Login from "../components/Login.jsx";
+import SignUp from "../components/Signup.jsx";
+import Model from "../components/Modal.jsx";
 
 const LandingPage = () => {
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
 
   const [MobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [CurrentPage, setCurrentPage] = useState();
-  const [openAuthModal, setOpenAuthModal] = useState("login");
-
+const [CurrentPage, setCurrentPage] = useState("login");
+const [openAuthModal, setOpenAuthModal] = useState(false);
+  
   const handleCTA = () => {
     !user ? setOpenAuthModal(true) : navigate("/dashboard");
   };
@@ -83,7 +86,7 @@ const LandingPage = () => {
             </div>
             <span className={landingPageStyles.logoText}>GetSetCV</span>
           </div>
-
+          
           {/* mobile view */}
           <button
             onClick={() => setMobileMenuOpen(!MobileMenuOpen)}
@@ -493,8 +496,24 @@ const LandingPage = () => {
 
         {/* Footer Container */}
         <FooterComponent/>
+        <Model
+            isOpen={openAuthModal}
+            onClose={() => {
+              setOpenAuthModal(false)
+              setCurrentPage("login");
+              }}
+        hideHeader
+        >
+        <div>
+          {CurrentPage === "login" && <Login setCurrentPage={setCurrentPage}/>}
+          {CurrentPage === "signup" && <SignUp setCurrentPage={setCurrentPage}/>}
+        </div>
+        </Model>
       </main>
       <ChatboxWidget/>
+     
+     {/*model for login and signup */}
+      
     </div>
   );
 };

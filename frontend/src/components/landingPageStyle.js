@@ -233,14 +233,14 @@ export const authStyles = {
   subtitle: "text-slate-600 font-medium",
   form: "space-y-6",
   errorMessage: "text-red-500 text-sm font-medium bg-red-50 border border-red-200 px-4 py-3 rounded-xl",
-  submitButton: "w-full py-4 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-black rounded-2xl hover:scale-105 hover:shadow-xl hover:shadow-violet-200 transition-all text-lg",
+  submitButton: "w-full cursor-pointer py-4 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-black rounded-2xl hover:scale-105 hover:shadow-xl hover:shadow-violet-200 transition-all text-lg",
   switchText: "text-center text-sm text-slate-600 font-medium",
   switchButton: "font-black text-violet-600 hover:text-fuchsia-600 transition-colors",
   signupContainer: "w-[90vw] md:w-[400px] p-8 bg-gradient-to-br from-white to-rose-50 rounded-3xl border border-rose-100 shadow-2xl overflow-hidden",
   signupTitle: "text-2xl font-black text-slate-900 mb-2",
   signupSubtitle: "text-slate-600 font-medium",
   signupForm: "space-y-4",
-  signupSubmit: "w-full py-4 bg-gradient-to-r from-rose-500 to-pink-600 text-white font-black rounded-2xl hover:scale-105 hover:shadow-xl hover:shadow-rose-200 transition-all text-lg",
+  signupSubmit: "cursor-pointer w-full py-4 bg-gradient-to-r from-rose-500 to-pink-600 text-white font-black rounded-2xl hover:scale-105 hover:shadow-xl hover:shadow-rose-200 transition-all text-lg",
   signupSwitchButton: "font-black text-rose-600 hover:text-pink-600 transition-colors"
 };
 
@@ -396,7 +396,7 @@ export const inputStyles = {
     ? 'border-violet-500 ring-4 ring-violet-500/20 shadow-lg shadow-violet-500/10'
     : 'border-gray-300 hover:border-gray-400'}`,
   inputField: "w-full bg-transparent outline-none text-gray-800 placeholder-gray-500 font-medium",
-  toggleButton: "text-gray-500 hover:text-violet-600 transition-colors p-1 rounded-lg hover:bg-gray-100",
+  toggleButton: " cursor-pointer text-gray-500 hover:text-violet-600 transition-colors p-1 rounded-lg hover:bg-gray-100",
 };
 
 export const photoSelectorStyles = {
